@@ -3,6 +3,36 @@
 namespace pwdctl::core
 {
 
+namespace {
+    std::vector<FieldError> validateAddPasswordEntry(const AddPasswordEntryCommand& command) noexcept {
+
+        std::vector<FieldError> errors;
+
+        if (command.title.empty()) {
+            errors.emplace_back("title", "Title must not be empty");
+        }
+
+        if (command.username.empty()) {
+            errors.emplace_back("username", "Username must not be empty");
+        }
+
+        if (command.password.empty()) {
+            errors.emplace_back("password", "Password must not be empty");
+        }
+
+        return errors;
+    }
+
+    bool updateIfNotNull(std::string& targetStr, const std::optional<std::string>& newStr) {
+        if (newStr) {
+            targetStr = newStr.value();
+            return true;
+        }
+
+        return false;
+    }
+}
+
 bool pwdctl::core::PasswordCollection::isPasswordEntryValid(const PasswordEntry& entry) {
     return !entry.id.empty() &&
             !entry.title.empty() &&
@@ -10,9 +40,11 @@ bool pwdctl::core::PasswordCollection::isPasswordEntryValid(const PasswordEntry&
             !entry.password.empty();
 }
     
-EntryId PasswordCollection::addEntry(const AddPasswordEntryCommand &command) noexcept
-{
-    // TODO: validate
+std::expected<EntryId, std::vector<FieldError>> PasswordCollection::addEntry(const AddPasswordEntryCommand& command) noexcept{
+    const auto errors = validateAddPasswordEntry(command);
+
+    if (!errors.empty()) return std::unexpected(errors);
+
 
     PasswordEntry entry;
     entry.id        = ""; //TODO: genrate ID
@@ -39,20 +71,34 @@ void pwdctl::core::PasswordCollection::removeEntry(const EntryId &id) noexcept
     }
 }
 
-bool PasswordCollection::updateEntry(const EntryId &id, const UpdatePasswordEntryCommand &command) noexcept
+std::vector<std::string> PasswordCollection::updateEntry(const EntryId &id, 
+    const UpdatePasswordEntryCommand &command) noexcept
 {
-    // TODO: validate
-
     auto it = pwdEntries_.find(id);
     if (it == pwdEntries_.end()) {
-        return false;
+        return {};
     }
     
     auto& targetEntry = it->second;
+    std::vector<std::string> updatedFields;
 
-    // TODO: make method
+    if (updateIfNotNull(targetEntry.title, command.title)) {
+        updatedFields.push_back("title");
+    }
 
-    return true;
+    if (updateIfNotNull(targetEntry.username, command.username)) {
+        updatedFields.push_back("username");
+    }
+
+    if (updateIfNotNull(targetEntry.password, command.password)) {
+        updatedFields.push_back("password");
+    }
+
+    if (updateIfNotNull(targetEntry.url, command.url)) {
+        updatedFields.push_back("url");
+    }
+
+    return updatedFields;
 }
 
 const PasswordEntry* pwdctl::core::PasswordCollection::entryById(const EntryId &id) const noexcept

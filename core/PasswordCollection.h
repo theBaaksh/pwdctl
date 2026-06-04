@@ -5,8 +5,10 @@
 #include <unordered_map>
 #include <string>
 #include <optional>
+#include <expected>
 
 #include "TypesDefininitions.h"
+#include "FieldError.h"
 
 namespace pwdctl::core {
 
@@ -48,9 +50,10 @@ public:
     PasswordCollection() = default;
     ~PasswordCollection() = default;
 
-    EntryId addEntry(const AddPasswordEntryCommand& command) noexcept;
+    std::expected<EntryId, std::vector<FieldError>> addEntry(const AddPasswordEntryCommand& command) noexcept;
     void removeEntry(const EntryId& id) noexcept;
-    bool updateEntry(const EntryId& id, const UpdatePasswordEntryCommand& command) noexcept;
+    std::vector<std::string> updateEntry(const EntryId& id, 
+        const UpdatePasswordEntryCommand& command) noexcept;
 
     [[nodiscard]]
     const PasswordEntry* entryById(const EntryId& id) const noexcept;  
