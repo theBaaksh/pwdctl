@@ -33,18 +33,10 @@ namespace {
     }
 }
 
-bool pwdctl::core::PasswordCollection::isPasswordEntryValid(const PasswordEntry& entry) {
-    return !entry.id.empty() &&
-            !entry.title.empty() &&
-            !entry.username.empty() &&
-            !entry.password.empty();
-}
-    
 std::expected<EntryId, std::vector<FieldError>> PasswordCollection::addEntry(const AddPasswordEntryCommand& command) noexcept{
+
     const auto errors = validateAddPasswordEntry(command);
-
     if (!errors.empty()) return std::unexpected(errors);
-
 
     PasswordEntry entry;
     entry.id        = ""; //TODO: genrate ID
@@ -66,9 +58,11 @@ void pwdctl::core::PasswordCollection::removeEntry(const EntryId &id) noexcept
     if (id.empty()) return;
 
     const auto it = pwdEntries_.find(id);
-    if (it != pwdEntries_.end()) {
-        pwdEntries_.erase(it);
+    if (it == pwdEntries_.end()) {
+        return;
     }
+
+    pwdEntries_.erase(it);
 }
 
 std::vector<std::string> PasswordCollection::updateEntry(const EntryId &id, 
@@ -113,16 +107,26 @@ const PasswordEntry* pwdctl::core::PasswordCollection::entryById(const EntryId &
     return &it->second;
 }
 
-const std::vector<PasswordEntry> pwdctl::core::PasswordCollection::allEntries() const noexcept
+const std::vector<EntrySummary> pwdctl::core::PasswordCollection::allEntries() const noexcept
 {
-    std::vector<PasswordEntry> entries;
-    entries.reserve(pwdEntries_.size());
+    std::vector<EntrySummary> summaries;
+    summaries.reserve(pwdEntries_.size());
 
     for (const auto& entryItem : pwdEntries_) {
-        entries.push_back(entryItem.second);
+        const auto& entry = entryItem.second; 
+
+        EntrySummary summary {
+            .id = entry.id,
+            .title = entry.title,
+            .username = entry.username,
+            .url = entry.url,
+            .updatedAt = entry.updatedAt
+        };
+
+        summaries.push_back(std::move(summary));
     }
 
-    return entries;
+    return summaries;
 }
 
 } // namespace pwdctl::core

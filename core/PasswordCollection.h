@@ -44,6 +44,14 @@ bool operator==(const PasswordEntry& other) const {
 }
 };
 
+struct EntrySummary {
+    std::string id;
+    std::string title;
+    std::string username;
+    std::string url;
+    Date updatedAt;
+};
+
 class PasswordCollection {
 
 public:
@@ -57,10 +65,7 @@ public:
 
     [[nodiscard]]
     const PasswordEntry* entryById(const EntryId& id) const noexcept;  
-    const std::vector<PasswordEntry> allEntries() const noexcept;
-
-private:
-    bool isPasswordEntryValid(const PasswordEntry& entry);
+    const std::vector<EntrySummary> allEntries() const noexcept;
 
 private:
     std::unordered_map<EntryId, PasswordEntry> pwdEntries_;
