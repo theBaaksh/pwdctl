@@ -1,5 +1,8 @@
 #include "PasswordCollection.h"
 
+
+#include "Utils.h"
+
 namespace pwdctl::core
 {
 
@@ -39,13 +42,13 @@ std::expected<EntryId, std::vector<FieldError>> PasswordCollection::addEntry(con
     if (!errors.empty()) return std::unexpected(errors);
 
     PasswordEntry entry;
-    entry.id        = ""; //TODO: genrate ID
+    entry.id        = utils::generateId();
     entry.title     = command.title;
     entry.username  = command.username;
     entry.password  = command.password;
     entry.url       = command.url;
-    entry.createdAt = Date(); //TODO: fill day today
-    entry.updatedAt = Date(); //TODO: fill day today
+    entry.createdAt = utils::currentTimestampMs();
+    entry.updatedAt = utils::currentTimestampMs();
 
     auto id = entry.id;
     pwdEntries_.emplace(id, std::move(entry));
@@ -55,7 +58,7 @@ std::expected<EntryId, std::vector<FieldError>> PasswordCollection::addEntry(con
 
 void pwdctl::core::PasswordCollection::removeEntry(const EntryId &id) noexcept
 {
-    if (id.empty()) return;
+    if (id.is_nil()) return;
 
     const auto it = pwdEntries_.find(id);
     if (it == pwdEntries_.end()) {
@@ -97,7 +100,7 @@ std::vector<std::string> PasswordCollection::updateEntry(const EntryId &id,
 
 const PasswordEntry* pwdctl::core::PasswordCollection::entryById(const EntryId &id) const noexcept
 {
-    if (id.empty()) return nullptr;
+    if (id.is_nil()) return nullptr;
 
     const auto it = pwdEntries_.find(id);
     if (it == pwdEntries_.end()) {
@@ -116,7 +119,6 @@ const std::vector<EntrySummary> pwdctl::core::PasswordCollection::allEntries() c
         const auto& entry = entryItem.second; 
 
         EntrySummary summary {
-            .id = entry.id,
             .title = entry.title,
             .username = entry.username,
             .url = entry.url,

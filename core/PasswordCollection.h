@@ -1,5 +1,5 @@
-#ifndef PASSWORD_ENTIES
-#define PASSWORD_ENTIES
+#ifndef PASSWORD_ENTIES_H
+#define PASSWORD_ENTIES_H
 
 #include <vector>
 #include <unordered_map>
@@ -33,8 +33,8 @@ struct PasswordEntry
     std::string username;
     std::string password;
     std::string url;
-    Date createdAt;
-    Date updatedAt;
+    Timestamp createdAt;
+    Timestamp updatedAt;
 
 bool operator==(const PasswordEntry& other) const {
     return id   == other.id &&
@@ -45,11 +45,10 @@ bool operator==(const PasswordEntry& other) const {
 };
 
 struct EntrySummary {
-    std::string id;
     std::string title;
     std::string username;
     std::string url;
-    Date updatedAt;
+    Timestamp updatedAt;
 };
 
 class PasswordCollection {
@@ -73,4 +72,4 @@ private:
 
 }
 
-#endif // #ifndef PASSWORD_ENTIES
+#endif // PASSWORD_ENTIES_H

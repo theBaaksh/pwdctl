@@ -1,5 +1,5 @@
-#ifndef FIELD_ERROR
-#define FIELD_ERROR
+#ifndef FIELD_ERROR_H
+#define FIELD_ERROR_H
 
 #include <string>
 #include <optional>
@@ -26,4 +26,4 @@ private:
 
 }
 
-#endif  //FIELD_ERROR
+#endif // FIELD_ERROR_H

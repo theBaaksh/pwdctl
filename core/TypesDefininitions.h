@@ -1,13 +1,14 @@
-#ifndef TYPES_DEFINITIONS
-#define TYPES_DEFINITIONS
+#ifndef TYPES_DEFINITIONS_H
+#define TYPES_DEFINITIONS_H
 
 #include <string>
-#include <filesystem>
+
+#define UUID_SYSTEM_GENERATOR
+#include "uuid.h"
 
 namespace pwdctl::core {
-    using EntryId = std::string;
-    using VaultPath = std::filesystem::path;
-    using Date = std::int64_t;    
+    using EntryId = uuids::uuid;
+    using Timestamp = std::int64_t;
 }
 
-#endif // TYPES_DEFINITIONS
+#endif // TYPES_DEFINITIONS_H
