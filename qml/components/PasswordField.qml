@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 
-Item {
+FocusScope {
     id: root
 
     property alias password: input.text
@@ -28,21 +28,31 @@ Item {
         anchors.top: parent.top
         height: 66
         radius: 22
-        color: "#ffffff"
-        border.width: 1
+        color: input.activeFocus ? "#fbfffe" : "#ffffff"
+        border.width: input.activeFocus ? 2 : 1
         border.color: root.errorText.length > 0 ? "#df3f70" : (input.activeFocus ? "#69eee3" : "#f1bbd2")
 
         Behavior on border.color {
             ColorAnimation { duration: 160 }
         }
 
+        Behavior on border.width {
+            NumberAnimation { duration: 120; easing.type: Easing.OutCubic }
+        }
+
+        TapHandler {
+            enabled: root.enabled
+            acceptedButtons: Qt.LeftButton
+            onTapped: input.forceActiveFocus()
+        }
+
         Text {
             anchors.left: parent.left
             anchors.leftMargin: 21
             anchors.verticalCenter: parent.verticalCenter
-            text: "✦"
+            text: "•"
             color: input.activeFocus ? "#17bfb1" : "#d797b2"
-            font.pixelSize: 18
+            font.pixelSize: 24
         }
 
         TextInput {
@@ -56,6 +66,24 @@ Item {
             selectedTextColor: "#20151e"
             selectionColor: "#9ff7ee"
             echoMode: revealButton.checked ? TextInput.Normal : TextInput.Password
+            enabled: root.enabled
+            focus: true
+            activeFocusOnPress: true
+            cursorVisible: activeFocus
+            cursorDelegate: Rectangle {
+                width: 2
+                color: "#17bfb1"
+                radius: 1
+
+                SequentialAnimation on opacity {
+                    loops: Animation.Infinite
+                    running: input.activeFocus
+                    NumberAnimation { to: 1; duration: 120 }
+                    PauseAnimation { duration: 520 }
+                    NumberAnimation { to: 0; duration: 120 }
+                    PauseAnimation { duration: 320 }
+                }
+            }
             font.pixelSize: 20
             clip: true
             verticalAlignment: TextInput.AlignVCenter

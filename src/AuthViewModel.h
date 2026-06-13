@@ -44,9 +44,9 @@ private:
     void setFeedbackCode(const QString &feedbackCode);
     void setFailedAttempts(int failedAttempts);
 
-    bool m_isUnlocking = false;
-    bool m_capsLockActive = false;
-    int m_failedAttempts = 0;
-    QString m_errorText;
-    QString m_feedbackCode;
+    bool isUnlocking_ = false;
+    bool capsLockActive_ = false;
+    int failedAttempts_ = 0;
+    QString errorText_;
+    QString feedbackCode_;
 };

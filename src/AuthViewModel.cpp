@@ -14,32 +14,32 @@ QString AuthViewModel::vaultName() const
 
 bool AuthViewModel::isUnlocking() const
 {
-    return m_isUnlocking;
+    return isUnlocking_;
 }
 
 QString AuthViewModel::errorText() const
 {
-    return m_errorText;
+    return errorText_;
 }
 
 int AuthViewModel::failedAttempts() const
 {
-    return m_failedAttempts;
+    return failedAttempts_;
 }
 
 QString AuthViewModel::feedbackCode() const
 {
-    return m_feedbackCode;
+    return feedbackCode_;
 }
 
 bool AuthViewModel::capsLockActive() const
 {
-    return m_capsLockActive;
+    return capsLockActive_;
 }
 
 void AuthViewModel::unlock(const QString &masterPassword)
 {
-    if (m_isUnlocking) {
+    if (isUnlocking_) {
         return;
     }
 
@@ -66,7 +66,7 @@ void AuthViewModel::unlock(const QString &masterPassword)
         }
 
         const auto code = QStringLiteral("wrong_password");
-        setFailedAttempts(m_failedAttempts + 1);
+        setFailedAttempts(failedAttempts_ + 1);
         setErrorText({});
         setFeedbackCode(code);
         emit unlockFailed(code);
@@ -81,50 +81,50 @@ void AuthViewModel::clearError()
 
 void AuthViewModel::setCapsLockActive(bool active)
 {
-    if (m_capsLockActive == active) {
+    if (capsLockActive_ == active) {
         return;
     }
 
-    m_capsLockActive = active;
+    capsLockActive_ = active;
     emit capsLockActiveChanged();
 }
 
 void AuthViewModel::setIsUnlocking(bool isUnlocking)
 {
-    if (m_isUnlocking == isUnlocking) {
+    if (isUnlocking_ == isUnlocking) {
         return;
     }
 
-    m_isUnlocking = isUnlocking;
+    isUnlocking_ = isUnlocking;
     emit isUnlockingChanged();
 }
 
 void AuthViewModel::setErrorText(const QString &errorText)
 {
-    if (m_errorText == errorText) {
+    if (errorText_ == errorText) {
         return;
     }
 
-    m_errorText = errorText;
+    errorText_ = errorText;
     emit errorTextChanged();
 }
 
 void AuthViewModel::setFeedbackCode(const QString &feedbackCode)
 {
-    if (m_feedbackCode == feedbackCode) {
+    if (feedbackCode_ == feedbackCode) {
         return;
     }
 
-    m_feedbackCode = feedbackCode;
+    feedbackCode_ = feedbackCode;
     emit feedbackCodeChanged();
 }
 
 void AuthViewModel::setFailedAttempts(int failedAttempts)
 {
-    if (m_failedAttempts == failedAttempts) {
+    if (failedAttempts_ == failedAttempts) {
         return;
     }
 
-    m_failedAttempts = failedAttempts;
+    failedAttempts_ = failedAttempts;
     emit failedAttemptsChanged();
 }

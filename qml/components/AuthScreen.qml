@@ -129,18 +129,18 @@ Item {
     }
 
     Repeater {
-        model: 22
+        model: 8
 
         Rectangle {
             id: particle
 
             required property int index
 
-            width: 4 + (index % 3)
+            width: 3 + (index % 2)
             height: width
             radius: width / 2
-            color: index % 4 === 0 ? "#9ff7ee" : "#ffc4dc"
-            opacity: 0.18 + ((index % 5) * 0.04)
+            color: index % 3 === 0 ? "#9ff7ee" : "#ffc4dc"
+            opacity: 0.08 + ((index % 3) * 0.025)
             x: (particle.index * 83) % Math.max(root.width, 1)
             y: root.height + 30
 
@@ -183,7 +183,7 @@ Item {
         id: panelShadow
         width: authPanel.width
         height: authPanel.height
-        radius: 30
+        radius: 24
         x: authPanel.x + 18
         y: authPanel.y + 24
         color: "#05020a70"
@@ -193,7 +193,7 @@ Item {
         id: authPanel
         width: root.compact ? Math.min(root.width - 64, 520) : 450
         height: 474
-        radius: 30
+        radius: 24
         anchors.left: parent.left
         anchors.leftMargin: root.compact ? (root.width - width) / 2 : Math.max(70, root.width * 0.075)
         anchors.verticalCenter: parent.verticalCenter
@@ -209,23 +209,28 @@ Item {
 
         ColumnLayout {
             anchors.fill: parent
-            anchors.margins: 34
+            anchors.margins: 32
             spacing: 18
 
             Item {
                 Layout.fillWidth: true
-                Layout.preferredHeight: 88
+                Layout.preferredHeight: 104
 
                 Text {
                     anchors.left: parent.left
+                    anchors.right: vaultMark.left
+                    anchors.rightMargin: 16
                     anchors.top: parent.top
                     text: "YunoLock"
                     color: "#211421"
                     font.pixelSize: 40
                     font.weight: Font.DemiBold
+                    elide: Text.ElideRight
                 }
 
                 Rectangle {
+                    id: vaultMark
+
                     anchors.right: parent.right
                     anchors.top: parent.top
                     width: 44
@@ -236,19 +241,24 @@ Item {
 
                     Text {
                         anchors.centerIn: parent
-                        text: "◇"
+                        text: "Y"
                         color: "#17bfb1"
-                        font.pixelSize: 25
+                        font.pixelSize: 21
+                        font.weight: Font.DemiBold
                     }
                 }
 
                 Text {
                     anchors.left: parent.left
+                    anchors.right: parent.right
                     anchors.bottom: parent.bottom
                     text: root.auth.vaultName + " · доступ по мастер-фразе"
                     color: "#8b6473"
-                    font.pixelSize: 16
+                    font.pixelSize: 15
                     font.weight: Font.Medium
+                    wrapMode: Text.WordWrap
+                    maximumLineCount: 2
+                    elide: Text.ElideRight
                 }
             }
 
