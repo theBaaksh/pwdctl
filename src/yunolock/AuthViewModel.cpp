@@ -1,4 +1,4 @@
-#include "AuthViewModel.h"
+#include <yunolock/AuthViewModel.h>
 
 #include <QTimer>
 

@@ -9,9 +9,9 @@ set(CMAKE_AUTOMOC ON)
 find_package(Qt6 6.4 REQUIRED COMPONENTS Quick QuickControls2)
 
 qt_add_executable(yunolock
-    src/AuthViewModel.cpp
-    src/AuthViewModel.h
+    include/yunolock/AuthViewModel.h
     src/main.cpp
+    src/yunolock/AuthViewModel.cpp
 )
 
 qt_add_resources(yunolock app_resources
@@ -33,4 +33,9 @@ target_link_libraries(yunolock
     PRIVATE
         Qt6::Quick
         Qt6::QuickControls2
+)
+
+target_include_directories(yunolock
+    PRIVATE
+        include
 )
