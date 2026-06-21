@@ -110,7 +110,7 @@ const PasswordEntry* pwdctl::core::PasswordCollection::entryById(const EntryId &
     return &it->second;
 }
 
-const std::vector<EntrySummary> pwdctl::core::PasswordCollection::allEntries() const noexcept
+std::vector<EntrySummary> pwdctl::core::PasswordCollection::allEntries() const noexcept
 {
     std::vector<EntrySummary> summaries;
     summaries.reserve(pwdEntries_.size());
@@ -119,6 +119,7 @@ const std::vector<EntrySummary> pwdctl::core::PasswordCollection::allEntries() c
         const auto& entry = entryItem.second; 
 
         EntrySummary summary {
+            .id = entry.id,
             .title = entry.title,
             .username = entry.username,
             .url = entry.url,

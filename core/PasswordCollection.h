@@ -45,6 +45,7 @@ bool operator==(const PasswordEntry& other) const {
 };
 
 struct EntrySummary {
+    EntryId id;
     std::string title;
     std::string username;
     std::string url;
@@ -64,7 +65,7 @@ public:
 
     [[nodiscard]]
     const PasswordEntry* entryById(const EntryId& id) const noexcept;  
-    const std::vector<EntrySummary> allEntries() const noexcept;
+    std::vector<EntrySummary> allEntries() const noexcept;
 
 private:
     std::unordered_map<EntryId, PasswordEntry> pwdEntries_;

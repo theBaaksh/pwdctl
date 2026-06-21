@@ -3,6 +3,7 @@
 
 #include <chrono>
 #include <format>
+#include <random>
 #include <string>
 
 #include "TypesDefininitions.h"
@@ -25,10 +26,11 @@ inline std::string timestampToString(Timestamp timestampMs)
     return std::format("{:%d.%m.%Y %H:%M:%S}", tp);
 }
 
-inline EntryId generateId() {
-    return uuids::uuid_system_generator{}();
-} 
-
+inline EntryId generateId()
+{
+    static thread_local std::mt19937 engine{std::random_device{}()};
+    return uuids::uuid_random_generator{engine}();
+}
 
 } 
 
