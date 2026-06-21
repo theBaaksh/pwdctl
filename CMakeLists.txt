@@ -30,3 +30,21 @@ target_include_directories(core
         ${CMAKE_CURRENT_SOURCE_DIR}/${CORE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/${3RD_PARTY_DIR}
 )
+
+enable_testing()
+
+find_package(GTest REQUIRED)
+
+add_executable(core_tests
+    test/core/FieldErrorTests.cpp
+    test/core/PasswordCollectionTests.cpp
+)
+
+target_link_libraries(core_tests
+    PRIVATE
+        core
+        GTest::gtest_main
+)
+
+include(GoogleTest)
+gtest_discover_tests(core_tests)
