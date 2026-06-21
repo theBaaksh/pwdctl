@@ -1,4 +1,6 @@
 #include <algorithm>
+#include <thread>
+#include <chrono>
 
 #include <gtest/gtest.h>
 
@@ -49,11 +51,14 @@ TEST(PasswordCollectionTest, UpdatePasswordEntryTest)
 
     const auto id = addResult.value();
     EXPECT_FALSE(id.is_nil());
+
     const auto* entryBefore = collection.entryById(id);
     ASSERT_NE(entryBefore, nullptr);
 
     const auto createdAt = entryBefore->createdAt;
     const auto previousUpdatedAt = entryBefore->updatedAt;
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
     const pwdctl::core::UpdatePasswordEntryCommand updateCommand{
         .title = "Updated Google account",

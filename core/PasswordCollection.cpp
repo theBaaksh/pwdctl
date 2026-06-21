@@ -47,8 +47,10 @@ std::expected<EntryId, std::vector<FieldError>> PasswordCollection::addEntry(con
     entry.username  = command.username;
     entry.password  = command.password;
     entry.url       = command.url;
-    entry.createdAt = utils::currentTimestampMs();
-    entry.updatedAt = utils::currentTimestampMs();
+
+    const Timestamp timestamp = utils::currentTimestampMs();
+    entry.createdAt = timestamp;
+    entry.updatedAt = timestamp;
 
     auto id = entry.id;
     pwdEntries_.emplace(id, std::move(entry));
@@ -93,6 +95,10 @@ std::vector<std::string> PasswordCollection::updateEntry(const EntryId &id,
 
     if (updateIfNotNull(targetEntry.url, command.url)) {
         updatedFields.push_back("url");
+    }
+
+    if (updatedFields.size()) {
+        targetEntry.updatedAt = utils::currentTimestampMs();
     }
 
     return updatedFields;
