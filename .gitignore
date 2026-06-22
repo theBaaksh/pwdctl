@@ -60,6 +60,9 @@ CMakeLists.txt.user
 *.bak
 *.swp
 
+# IDE
+.vscode/
+
 # vcpkg
 vcpkg_installed/
 
