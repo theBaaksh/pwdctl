@@ -1,4 +1,4 @@
-#include <yunolock/AuthViewModel.h>
+#include "AuthViewModel.h"
 
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
