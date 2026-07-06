@@ -5,7 +5,8 @@ project(pwdctl VERSION 0.1.0 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
-set(CMAKE_AUTOMOC ON)
+
+option(PWDCTL_BUILD_TESTS "Build pwdctl tests" OFF)
 
 set(CORE_DIR "core")
 set(3RD_PARTY_DIR "3rd_party")
@@ -31,3 +32,8 @@ target_include_directories(core
         ${CMAKE_CURRENT_SOURCE_DIR}/${CORE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/${3RD_PARTY_DIR}
 )
+
+if(PWDCTL_BUILD_TESTS)
+    enable_testing()
+    include("${CMAKE_CURRENT_LIST_DIR}/cmake/PwdctlTests.cmake")
+endif()
