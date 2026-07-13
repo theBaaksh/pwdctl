@@ -6,12 +6,31 @@ Experimental password manager.
 
 Qt/QML desktop prototype with a generated anime-style background, emotional mascot states, and playful unlock feedback.
 
-Build with Qt 6.5.3:
+## Build configuration
 
-```bash
-cmake -S . -B build-qt653-cxx17 -DCMAKE_PREFIX_PATH=/opt/Qt/6.5.3/gcc_64
-cmake --build build-qt653-cxx17
-./build-qt653-cxx17/yunolock
-```
+The project uses CMake presets for shared build modes.
+
+Use one of these presets in Qt Creator:
+
+- `core-tests` - build and run pwdctl core tests without GUI or Qt.
+- `local-app-release` - build and run the YunoLock GUI with a local Qt path.
+
+To enable the GUI preset, copy `CMakeUserPresets.json.example` to
+`CMakeUserPresets.json` and set `CMAKE_PREFIX_PATH` to your Qt installation.
 
 The temporary demo unlock password is `sakura`.
+
+Core test commands:
+
+```bash
+cmake --preset core-tests
+cmake --build --preset core-tests
+ctest --preset core-tests
+```
+
+GUI build commands after creating local presets:
+
+```bash
+cmake --preset local-app-release
+cmake --build --preset local-app-release
+```

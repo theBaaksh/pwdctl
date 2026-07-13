@@ -1,0 +1,42 @@
+{
+  "version": 6,
+  "configurePresets": [
+    {
+      "name": "core-tests",
+      "displayName": "Core Tests",
+      "description": "Release build for pwdctl core tests without GUI or Qt.",
+      "binaryDir": "${sourceDir}/build/core-tests",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "BUILD_TESTING": "ON",
+        "PWDCTL_BUILD_YUNOLOCK": "OFF"
+      }
+    },
+    {
+      "name": "app-release-base",
+      "hidden": true,
+      "description": "Base release build for local GUI presets.",
+      "binaryDir": "${sourceDir}/build/app-release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "BUILD_TESTING": "OFF",
+        "PWDCTL_BUILD_YUNOLOCK": "ON"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "core-tests",
+      "configurePreset": "core-tests"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "core-tests",
+      "configurePreset": "core-tests",
+      "output": {
+        "outputOnFailure": true
+      }
+    }
+  ]
+}
