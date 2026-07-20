@@ -2,7 +2,8 @@ include_guard(GLOBAL)
 
 find_package(GTest REQUIRED)
 
-set(PWDCTL_TESTS_DIR "${CMAKE_CURRENT_LIST_DIR}/../tests")
+get_filename_component(PWDCTL_ROOT_DIR "${CMAKE_CURRENT_LIST_DIR}/.." ABSOLUTE)
+set(PWDCTL_TESTS_DIR "${PWDCTL_ROOT_DIR}/tests")
 
 add_executable(pwdctl_core_tests
     "${PWDCTL_TESTS_DIR}/core/FieldErrorTests.cpp"

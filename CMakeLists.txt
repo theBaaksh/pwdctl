@@ -6,6 +6,12 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+option(PWDCTL_BUILD_YUNOLOCK "Build YunoLock desktop application" ON)
+
+include(CTest)
+
 add_subdirectory(pwdctl)
 
-add_subdirectory(application/desktop/yunolock)
+if(PWDCTL_BUILD_YUNOLOCK)
+    add_subdirectory(application/desktop/yunolock)
+endif()

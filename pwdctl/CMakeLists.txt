@@ -6,7 +6,9 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-option(PWDCTL_BUILD_TESTS "Build pwdctl tests" OFF)
+if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
+    include(CTest)
+endif()
 
 set(CORE_DIR "core")
 set(3RD_PARTY_DIR "3rd_party")
@@ -30,10 +32,13 @@ target_include_directories(3rd_party
 target_include_directories(core
     PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/${CORE_DIR}
-        ${CMAKE_CURRENT_SOURCE_DIR}/${3RD_PARTY_DIR}
 )
 
-if(PWDCTL_BUILD_TESTS)
-    enable_testing()
+target_link_libraries(core
+    PUBLIC
+        3rd_party
+)
+
+if(BUILD_TESTING)
     include("${CMAKE_CURRENT_LIST_DIR}/cmake/PwdctlTests.cmake")
 endif()
